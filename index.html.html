@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun!</title>
+    
+    <!-- Mengambil font modern dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Variabel untuk mempermudah pengaturan warna */
+        :root {
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --primary-btn: #ff4757;
+            --primary-hover: #ff6b81;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Background Animasi Gradien Modern */
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Desain Kartu Glassmorphism (Efek Kaca) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+            padding: 50px 40px;
+            text-align: center;
+            max-width: 420px;
+            width: 85%;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .icon-floating {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .title {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
+            margin: 0 0 5px 0;
+            font-size: 2.2rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        /* Area pesan dengan transisi mulus */
+        .message-container {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(20px);
+        }
+
+        .message-container.show {
+            max-height: 300px; /* Cukup tinggi untuk menampung teks */
+            opacity: 1;
+            transform: translateY(0);
+            margin-bottom: 20px;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 20px;
+            color: var(--text-main);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.5);
+        }
+
+        /* Tombol Modern */
+        .btn-modern {
+            background: var(--primary-btn);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-modern:hover {
+            background: var(--primary-hover);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 25px rgba(255, 71, 87, 0.4);
+        }
+
+        .btn-modern:active {
+            transform: translateY(1px);
+            box-shadow: 0 5px 10px rgba(255, 71, 87, 0.3);
+        }
+
+        .btn-modern.hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <div class="icon-floating">🎂</div>
+        <h1 class="title">Happy Birthday!</h1>
+        <p class="subtitle">Untuk seseorang yang sangat spesial...</p>
+        
+        <div class="message-container" id="pesan-container">
+            <div class="message-box">
+                Semoga panjang umur, sehat selalu, dan hari-harimu dipenuhi dengan kebahagiaan yang tak terhingga. Teruslah bersinar dan raih semua impian indah yang kamu cita-citakan! ✨🎁🎉
+            </div>
+        </div>
+
+        <button class="btn-modern" id="tombol-kejutan">
+            Buka Kejutan <span style="font-size: 1.2rem;">✨</span>
+        </button>
+    </div>
+
+    <!-- Library Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const btnKejutan = document.getElementById('tombol-kejutan');
+        const pesanContainer = document.getElementById('pesan-container');
+
+        btnKejutan.addEventListener('click', function() {
+            // 1. Tampilkan pesan dengan animasi mulus (menambah class 'show')
+            pesanContainer.classList.add('show');
+            
+            // 2. Sembunyikan tombol dengan memberikan class 'hide'
+            btnKejutan.classList.add('hide');
+            
+            // 3. Jalankan efek Confetti (Hujan kertas warna-warni) yang lebih meriah
+            var duration = 4 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              
+              confetti(Object.assign({}, defaults, { 
+                  particleCount,
+                  origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                  colors: ['#ff4757', '#ffa502', '#2ed573', '#1e90ff', '#ff69b4']
+              }));
+              
+              confetti(Object.assign({}, defaults, { 
+                  particleCount,
+                  origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                  colors: ['#ff4757', '#ffa502', '#2ed573', '#1e90ff', '#ff69b4']
+              }));
+            }, 250);
+        });
+    </script>
+
+</body>
+</html>
